@@ -35,7 +35,16 @@ class Dinosaur:
             self.dino_jump = False
             self.dino_run = True
         
-        
+        if self.dino_run:
+            self.run()
+        elif self.dino_duck:
+            self.duck()
+        if user_input[pygame.K_DOWN] and not self.dino_duck:
+            self.dino_duck = True
+            self.dino_run = False
+        elif not self.dino_duck:
+            self.dino_duck = False
+            self.dino_run = True
 
         if self.step_index >= 10:
             self.step_index = 0
@@ -59,10 +68,10 @@ class Dinosaur:
 
     def duck(self):
         self.image = DUCKING
-        self.dino_rect.y += self.duck_vel * 4
-        self.duck_vel += 0.8
+        self.dino_rect.y -= self.duck_vel * 4
+        self.duck_vel -= 0.8
         
-        if self.duck_vel < +self.DUCK_VEL:
+        if self.duck_vel < -self.DUCK_VEL:
             self.dino_rect.y = self.Y_POS
             self.dino_duck = False
             self.duck_vel = self.DUCK_VEL
