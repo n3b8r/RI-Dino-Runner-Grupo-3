@@ -16,7 +16,7 @@ class Game:
         self.x_pos_bg = 0
         self.y_pos_bg = 380
 
-        self.player = Dinosaur() 
+        self.player = Dinosaur()
 
     def run(self):
         # Game loop: events - update - draw
