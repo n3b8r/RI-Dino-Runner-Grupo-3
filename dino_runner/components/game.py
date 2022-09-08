@@ -97,13 +97,13 @@ class Game:
 
     def show_menu(self):
         print(self.death_count)
-        self.screen.fill((181, 178, 178))
+        self.screen.fill((255, 176, 100))
         half_screen_height = SCREEN_HEIGHT // 2
         half_screen_width = SCREEN_WIDTH // 2
 
         if self.death_count == 0:
             font = pygame.font.Font(FONT_STYLE, 30)
-            text = font.render("Press any key to start", True, (0, 0, 0))
+            text = font.render("Press any key to start", True, (0, 250, 0))
             text_rect = text.get_rect()
             text_rect.center = (half_screen_width, half_screen_height)
             self.screen.blit(text, text_rect)
@@ -113,24 +113,24 @@ class Game:
             self.screen.blit(CLOUD, (half_screen_width +60, half_screen_height - 100))  
         else:
             font = pygame.font.Font(FONT_STYLE, 50)
-            text = font.render("GAME OVER", True, (0, 0, 0))
+            text = font.render("GAME OVER", True, (255, 0, 0))
             text_rect = text.get_rect()
             text_rect.center = (610, 80)
             self.screen.blit(text, text_rect)
 
             font = pygame.font.Font(FONT_STYLE, 50)
-            text = font.render("PRESS ANY KEY TO REBOOT", True, (0, 0, 0))
+            text = font.render("PRESS ANY KEY TO REBOOT", True, (0, 0, 180))
             text_rect = text.get_rect()
             text_rect.center = (610, 520)
             self.screen.blit(text, text_rect)
             
             font = pygame.font.Font(FONT_STYLE, 40)
-            text = font.render(F"Deaths: {self.death_count}", True, (0, 0, 0))
+            text = font.render(F"Deaths: {self.death_count}", True, (255, 100, 32))
             text_rect = text.get_rect()
             text_rect.center = (600, 300)
             self.screen.blit(text, text_rect)
 
-            text = font.render(F"Total score: {self.score}", True, (0, 0, 0))
+            text = font.render(F"Total score: {self.score}", True, (255, 100, 32))
             text_rect = text.get_rect()
             text_rect.center = (600, 400)
             self.screen.blit(text, text_rect)
