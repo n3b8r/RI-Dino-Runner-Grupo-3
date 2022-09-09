@@ -16,6 +16,7 @@ class ObstacleManager:
 
         for obstacle in self.obstacles:
             obstacle.update(game.game_speed, self.obstacles)
+           
             if game.player.dino_rect.colliderect(obstacle.rect):
                 if game.player.type != SHIELD_TYPE: 
                     pygame.time.delay(500)
@@ -24,7 +25,16 @@ class ObstacleManager:
                     break
                 else:
                     self.obstacles.remove(obstacle)
-
+            elif game.player.dino_rect.colliderect(obstacle.rect):
+                self.tries -= 1
+                game.lives_manager.reduce_heart()
+                game.playing = True
+                if self.tries != 0:
+                    self.obstacles.pop()
+                else:
+                    pygame.time.delay(500)
+                    game.death_count += 1
+                    break
 
     def draw(self, screen): 
         for obstacle in self.obstacles: 
@@ -32,3 +42,4 @@ class ObstacleManager:
 
     def reset_obstacles(self):
         self.obstacles = []
+        self.tries = 5

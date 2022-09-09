@@ -1,4 +1,5 @@
 import pygame
+from dino_runner.components.Lifes.LivesManager import LivesManager
 from dino_runner.components.dinosaur import Dinosaur
 from dino_runner.components.obstacles.obstacle_manager import ObstacleManager
 from dino_runner.components.power_ups.power_up_manager import PowerUpManager
@@ -21,9 +22,11 @@ class Game:
         self.player = Dinosaur()
         self.obstacle_manager = ObstacleManager()
         self.power_up_manager = PowerUpManager()
+        self.lives_manager = LivesManager()
 
         self.running = False
         self.score = 0
+        self.max_score = 0
         self.death_count = 0
 
     def execute(self):
@@ -64,10 +67,15 @@ class Game:
         self.score += 1
         if self.score % 100 == 0:
             self.game_speed += 3
+        if self.max_score < self.score:
+            self.max_score = self.score
 
     def draw(self):
         self.clock.tick(FPS)
-        self.screen.fill((205, 205, 205))
+        if self.score <= 1000:
+            self.screen.fill((250, 250, 250))
+        else:
+            self.screen.fill((205, 205, 205))
         self.draw_background()
         self.draw_score()
         self.draw_power_up_time()
@@ -87,12 +95,9 @@ class Game:
         self.x_pos_bg -= self.game_speed
 
     def draw_score(self):
-        font = pygame.font.Font(FONT_STYLE, 22)
-        text = font.render(F"Score: {self.score}", True, (0, 0, 0))
-        text_rect = text.get_rect()
-        text_rect.center = (1000, 50)
-        self.screen.blit(text, text_rect)
-
+        self.place_text(22, 1000, 50, F"Score: {self.score}", (0, 0, 0))
+        self.place_text(22, 970, 70, F"Hight Score: {self.max_score}", (0, 0, 0))
+ 
     def draw_power_up_time(self):
         if self.player.has_power_up:
             time_to_show = round((self.player.power_up_time_up - pygame.time.get_ticks()) / 1000, 2)
@@ -114,7 +119,14 @@ class Game:
                 self.running = False
             elif event.type == pygame.KEYDOWN:
                 self.run()
-                                                                               
+
+    def place_text(self, font_sizes, pos_x, pos_y, text_message, color):
+        font = pygame.font.Font(FONT_STYLE, font_sizes)
+        text = font.render(text_message, True, color)
+        text_rect = text.get_rect()
+        text_rect.center = (pos_x, pos_y)
+        self.screen.blit(text, text_rect)
+
     def show_menu(self):
         print(self.death_count)
         self.screen.fill((205, 205, 205))
@@ -122,39 +134,15 @@ class Game:
         half_screen_width = SCREEN_WIDTH // 2
 
         if self.death_count == 0:
-            font = pygame.font.Font(FONT_STYLE, 30)
-            text = font.render("Press any key to start", True, (0, 0, 20))
-            text_rect = text.get_rect()
-            text_rect.center = (half_screen_width, half_screen_height)
-            self.screen.blit(text, text_rect)
-            
+            self.place_text(30, half_screen_width, half_screen_height, "Press any key to start", (0, 0, 20))
             self.screen.blit(LIVE_ICON, (half_screen_width -20, half_screen_height - 140))
             self.screen.blit(CLOUD, (half_screen_width -100, half_screen_height - 100))
             self.screen.blit(CLOUD, (half_screen_width +60, half_screen_height - 100))  
         else:
-            font = pygame.font.Font(FONT_STYLE, 50)
-            text = font.render("GAME OVER", True, (255, 0, 0))
-            text_rect = text.get_rect()
-            text_rect.center = (610, 80)
-            self.screen.blit(text, text_rect)
-
-            font = pygame.font.Font(FONT_STYLE, 50)
-            text = font.render("PRESS ANY KEY TO REBOOT", True, (0, 0, 180))
-            text_rect = text.get_rect()
-            text_rect.center = (610, 520)
-            self.screen.blit(text, text_rect)
-            
-            font = pygame.font.Font(FONT_STYLE, 40)
-            text = font.render(F"Deaths: {self.death_count}", True, (255, 100, 32))
-            text_rect = text.get_rect()
-            text_rect.center = (600, 300)
-            self.screen.blit(text, text_rect)
-
-            text = font.render(F"Total score: {self.score}", True, (255, 100, 32))
-            text_rect = text.get_rect()
-            text_rect.center = (600, 400)
-            self.screen.blit(text, text_rect)
-
+            self.place_text(50, 610, 80, "GAME OVER", (255, 0, 0))
+            self.place_text(50, 610, 520, "PRESS ANY KEY TO REBOOT", (0, 0, 180))
+            self.place_text(40, 600, 300, f"Deaths: {self.death_count}", (255, 100, 32))
+            self.place_text(40, 600, 400, f"Total score: {self.score}", (255, 100, 32))
             self.screen.blit(ICON, (half_screen_width -20, half_screen_height - 140))
             self.screen.blit(CLOUD, (half_screen_width -100, half_screen_height - 100))
             self.screen.blit(CLOUD, (half_screen_width +60, half_screen_height - 100))   
