@@ -1,11 +1,9 @@
-from pickle import FALSE
-from unittest.mock import DEFAULT
 import pygame
 from dino_runner.components.dinosaur import Dinosaur
 from dino_runner.components.obstacles.obstacle_manager import ObstacleManager
 from dino_runner.components.power_ups.power_up_manager import PowerUpManager
 
-from dino_runner.utils.constants import BG, BIRD, CLOUD, DEFAULT_TYPE, FONT_STYLE, ICON, LIVE_ICON, SCREEN_HEIGHT, SCREEN_WIDTH, TITLE, FPS
+from dino_runner.utils.constants import BG, CLOUD, DEFAULT_TYPE, FONT_STYLE, ICON, LIVE_ICON, SCREEN_HEIGHT, SCREEN_WIDTH, TITLE, FPS
 
 
 class Game:
@@ -39,18 +37,15 @@ class Game:
 
     def run(self):
         # Game loop: events - update - draw  
-        self.reset_game()
-        while self.playing:
-            self.events()
-            self.update()
-            self.draw()
-    
-    def reset_game(self):
         self.obstacle_manager.reset_obstacles()
         self.power_up_manager.reset_power_ups()
         self.playing = True
         self.game_speed = 15
         self.score = 0
+        while self.playing:
+            self.events()
+            self.update()
+            self.draw()
         
     def events(self):
         for event in pygame.event.get():
@@ -100,17 +95,16 @@ class Game:
 
     def draw_power_up_time(self):
         if self.player.has_power_up:
-            time_to_show = round((self.player.power_up_time_up - pygame.time.get_ticks() / 1000, 2))
+            time_to_show = round((self.player.power_up_time_up - pygame.time.get_ticks()) / 1000, 2)
             if time_to_show >= 0:
                 font = pygame.font.Font(FONT_STYLE, 22)
                 text = font.render(f"{self.player.type.capitalize()} enabled for {time_to_show} seconds.", True, (0, 0, 0))
                 text_rect = text.get_rect()
-                text_rect.center = (1000, 50)
+                text_rect.center = (550, 50)
                 self.screen.blit(text, text_rect)
             else:
-                self.has_power_up = FALSE
+                self.has_power_up = False
                 self.player.type = DEFAULT_TYPE
-                
 
     def handle_events_on_menu(self):
         for event in pygame.event.get():
@@ -120,7 +114,7 @@ class Game:
                 self.running = False
             elif event.type == pygame.KEYDOWN:
                 self.run()
-
+                                                                               
     def show_menu(self):
         print(self.death_count)
         self.screen.fill((205, 205, 205))
@@ -164,6 +158,6 @@ class Game:
             self.screen.blit(ICON, (half_screen_width -20, half_screen_height - 140))
             self.screen.blit(CLOUD, (half_screen_width -100, half_screen_height - 100))
             self.screen.blit(CLOUD, (half_screen_width +60, half_screen_height - 100))   
-                 
+      
         pygame.display.update()
         self.handle_events_on_menu()
