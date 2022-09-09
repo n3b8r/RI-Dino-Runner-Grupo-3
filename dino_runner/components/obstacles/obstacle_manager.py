@@ -11,12 +11,8 @@ class ObstacleManager:
 
     def update(self, game):
         if len(self.obstacles) == 0:
-            if random.randint(0, 2) == 0:
-                self.obstacles.append(SmallCactus(SMALL_CACTUS))
-            elif random.randint(0, 2) == 1:
-                self.obstacles.append(LargeCactus(LARGE_CACTUS))
-            else:
-                self.obstacles.append(Bird(BIRD))
+            self.obstacle_type_list = [Bird(), SmallCactus(SMALL_CACTUS), LargeCactus(LARGE_CACTUS),] 
+            self.obstacles.append(random.choice(self.obstacle_type_list))
 
         for obstacle in self.obstacles:
             obstacle.update(game.game_speed, self.obstacles)
