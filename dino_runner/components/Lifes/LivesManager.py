@@ -1,4 +1,5 @@
 from dino_runner.components.Lifes.lifes import Heart
+from dino_runner.utils.constants import HEART
 
 
 class LivesManager:
