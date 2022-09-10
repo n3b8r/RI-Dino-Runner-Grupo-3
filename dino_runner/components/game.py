@@ -67,15 +67,15 @@ class Game:
         self.score += 1
         if self.score % 100 == 0:
             self.game_speed += 3
-        if self.max_score < self.score:
+        if self.max_score < self.score:         # para obtener el maximo puntaje
             self.max_score = self.score
 
     def draw(self):
         self.clock.tick(FPS)
         if self.score <= 1000:
-            self.screen.fill((250, 250, 250))
+            self.screen.fill((250, 250, 250)) 
         else:
-            self.screen.fill((205, 205, 205))
+            self.screen.fill((205, 205, 205)) # cambio de color de la pantalla
         self.draw_background()
         self.draw_score()
         self.draw_power_up_time()

@@ -24,11 +24,10 @@ class ObstacleManager:
                     game.death_count += 1
                     break
                 elif game.player.type == HAMMER_TYPE:
-                    self.obstacle_fly = True
+                    
                     self.hammer_obstacle(game)
                 else:
                     self.obstacles.remove(obstacle)
-            
             
             elif game.player.dino_rect.colliderect(obstacle.rect):
                 self.tries -= 1
@@ -44,8 +43,8 @@ class ObstacleManager:
     def hammer_obstacle(self, game):
         for obstacle in self.obstacles:
             if game.player.dino_rect.colliderect(obstacle.rect):
-                obstacle.rect.x += game.game_speed * 10
-                obstacle.rect.y -= game.game_speed * 10
+                obstacle.rect.x += game.game_speed * 2
+                obstacle.rect.y -= game.game_speed * 2
             if obstacle.rect.x > 1300:
                 self.obstacles.pop()
 
